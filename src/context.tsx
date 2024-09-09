@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { AppContextType, AppProviderProps } from "./types";
 
 // Creamos un contexto llamado AppContext con un valor inicial de null
@@ -20,14 +20,32 @@ export const useAppContext = () => {
   return context;
 };
 
+const getInitialDarkMode = () => {
+  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const storedDarkMode = localStorage.getItem('darkTheme');
+
+  if (storedDarkMode === null) {
+      return prefersDarkMode;
+  }
+
+  return storedDarkMode === 'true';
+};
+
 export const AppProvider = ({ children }: AppProviderProps) => {
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(getInitialDarkMode());
   const [searchTerm, setSearchTerm] = useState<string>("octocat");
 
   // Función para alternar el tema oscuro
   const toggleDarkTheme = () => {
-    setIsDarkTheme(prev => !prev);
+    const newDarkTheme = !isDarkTheme;
+    setIsDarkTheme(newDarkTheme);
+    localStorage.setItem('darkTheme', newDarkTheme.toString());
   };
+
+  useEffect(() => {
+    document.body.classList.toggle('dark', isDarkTheme);
+  }, [isDarkTheme]);
+  
 
   // Devolvemos el proveedor del contexto con el valor adecuado
   return (
