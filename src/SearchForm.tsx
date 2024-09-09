@@ -3,6 +3,7 @@ import { useAppContext } from "./context";
 
 export const SearchForm = () => {
   const { setSearchTerm } = useAppContext();
+  const [inputValue, setInputValue] = useState<string>("");
 
   const handleSubmit = (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
@@ -25,10 +26,11 @@ export const SearchForm = () => {
           alt="Search icon"
         />
         <input
-          className="w-4/5 pl-2 focus:outline-none bg-primary-lighter placeholder:text-secondary"
+          className='w-4/5 pl-2 focus:outline-none bg-primary-lighter placeholder:text-secondary'
+          id="search"
           type="text"
-          placeholder="Search Github username..."
           name="search"
+          placeholder="Search Github user"
         />
         <div className="flex items-center gap-2">
           <button
