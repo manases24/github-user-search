@@ -22,14 +22,16 @@ export const useAppContext = () => {
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
-  // const [searchTerm, setSearchTerm] = useState<string>('octocat');
 
+  // Función para alternar el tema oscuro
   const toggleDarkTheme = () => {
-    const newDarkTheme = !isDarkTheme;
-    setIsDarkTheme(newDarkTheme);
+    setIsDarkTheme(prev => !prev);
   };
 
-  <AppContext.Provider value={{isDarkTheme, toggleDarkTheme}}>
-    {children}
-  </AppContext.Provider>;
+  // Devolvemos el proveedor del contexto con el valor adecuado
+  return (
+    <AppContext.Provider value={{ isDarkTheme, toggleDarkTheme }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
